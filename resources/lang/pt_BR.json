@@ -72,6 +72,12 @@
     "Select A New Photo" : "Selecione uma nova foto",
     "Remove Photo" : "Remover foto",
     "The provided password does not match your current password." : "A senha digitada não é a sua senha atual.",
-    "The provided two factor authentication code was invalid." : "O código de autenticação inserido é inválido."
-    
+    "The provided two factor authentication code was invalid." : "O código de autenticação inserido é inválido.",
+    "Please confirm access to your account by entering the authentication code provided by your authenticator application." : "Por favor, confirme o acesso a sua conta digitando o código provido pelo seu aplicativo de autenticação",
+    "Code" : "Código",
+    "Done." : "Pronto.",
+    "Use a recovery code" : "Usar código de recuperação",
+    "Please confirm access to your account by entering one of your emergency recovery codes." : "Por favor, confirme o acesso a sua conta digitando um dos seus códigos de recuperação",
+    "Recovery Code" : "Código de Recuperação",
+    "Use an authentication code" : "Usar código de autenticação" 
 }

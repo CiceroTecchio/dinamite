@@ -18,7 +18,7 @@ class Equipamentos extends Migration
             $table->string('descricao');
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
-            $table->double('tamanho_local', 8, 2);
+            $table->decimal('leitura_limite');
             $table->unsignedBigInteger('cod_user');
             $table->foreign('cod_user')->references('id')->on('users');
             $table->timestamps();

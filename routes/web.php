@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Leitura;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('inicio');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    
+    $leituras = Leitura::join('equipamentos','cod_equipamento', 'equipamentos.id')
+    ->where('equipamentos.cod_user', Auth::id())
+    ->select('leituras.*')
+    ->get();
+
+    return view('dashboard', compact('leituras'));
 })->name('dashboard');
