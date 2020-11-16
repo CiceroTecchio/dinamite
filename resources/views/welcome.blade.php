@@ -1,38 +1,58 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    #tabs {
+        padding-top: 55px !important;
+    }
+</style>
 
-        <title>Laravel</title>
+<x-app-layout>
+    <div id="tabs"></div>
+    <div id="map"></div>
+</x-app-layout>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+    let map, heatmap;
+    var timerId = 0;
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {
+                lat: -25.7507575,
+                lng: -53.0612766
+            },
+            zoom: 14,
+        });
 
-        <style>
-            body {
-                font-family: 'Nunito';
-            }
-        </style>
-    </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Entrar</a>
+    }
+    //ao alterar tamanho da tela, redimensiona as divs
+    $(window).resize(function() {
+        redimensionarDivs();
+    });
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Registrar-se</a>
-                        @endif
-                    @endif
-                </div>
-            @endif
-        </div>
-    </body>
-</html>
+    //redimensiona as divs
+    function redimensionarDivs() {
+        document.getElementById('map').style.height = (window.innerHeight - 56) + 'px';
+    }
+
+    $(document).ready(function() {
+        redimensionarDivs();
+        timerId = setInterval(function() {
+            $.get("/pontos/perigo", function(resultado) {
+                console.log(resultado);
+                var pontos = [];
+                for (var x = 0; x < resultado.length; x++) {
+                    pontos.push(new google.maps.LatLng(resultado[x].latitude, resultado[x].longitude));
+                }
+                if (heatmap != null) {
+                    heatmap.setMap(null);
+                }
+                heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: pontos,
+                    map: map,
+                });
+                heatmap.set("radius", 40);
+            });
+        }, 5000);
+
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjG1spI2tp65rU0m0XG8KNDp1pfOhSjcc&callback=initMap&libraries=visualization" defer></script>
